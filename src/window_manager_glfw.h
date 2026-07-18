@@ -9,6 +9,8 @@ public:
 
     ProcAddrFunc getProcAddrFunc() override;
 
+    ProcAddrFunc getEglProcAddrFunc() override;
+
     std::shared_ptr<GameWindow> createWindow(const std::string& title, int width, int height, GraphicsApi api) override;
 
     void addGamepadMappingFile(const std::string& path) override;

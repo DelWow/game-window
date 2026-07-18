@@ -27,6 +27,10 @@ GameWindowManager::ProcAddrFunc GLFWFallbackEGLUTWindowManager::getProcAddrFunc(
     return manager->getProcAddrFunc();
 }
 
+GameWindowManager::ProcAddrFunc GLFWFallbackEGLUTWindowManager::getEglProcAddrFunc() {
+    return manager->getEglProcAddrFunc();
+}
+
 std::shared_ptr<GameWindow> GLFWFallbackEGLUTWindowManager::createWindow(const std::string& title, int width, int height,
                                                              GraphicsApi api) {
     return manager->createWindow(title, width, height, api);

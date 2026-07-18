@@ -13,6 +13,10 @@ GameWindowManager::ProcAddrFunc SDL3WindowManager::getProcAddrFunc() {
     return (GameWindowManager::ProcAddrFunc) SDL_GL_GetProcAddress;
 }
 
+GameWindowManager::ProcAddrFunc SDL3WindowManager::getEglProcAddrFunc() {
+    return (GameWindowManager::ProcAddrFunc) SDL_EGL_GetProcAddress;
+}
+
 std::shared_ptr<GameWindow> SDL3WindowManager::createWindow(const std::string& title, int width, int height,
                                                              GraphicsApi api) {
     return std::shared_ptr<GameWindow>(new SDL3GameWindow(title, width, height, api));

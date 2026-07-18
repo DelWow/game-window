@@ -16,6 +16,10 @@ GameWindowManager::ProcAddrFunc GLFWWindowManager::getProcAddrFunc() {
     return (GameWindowManager::ProcAddrFunc) glfwGetProcAddress;
 }
 
+GameWindowManager::ProcAddrFunc GLFWWindowManager::getEglProcAddrFunc() {
+    return (GameWindowManager::ProcAddrFunc) glfwGetProcAddress;
+}
+
 std::shared_ptr<GameWindow> GLFWWindowManager::createWindow(const std::string& title, int width, int height,
                                                              GraphicsApi api) {
     return std::shared_ptr<GameWindow>(new GLFWGameWindow(title, width, height, api));

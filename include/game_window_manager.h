@@ -25,6 +25,11 @@ public:
 
     virtual ProcAddrFunc getProcAddrFunc() = 0;
 
+    // Returns a resolver for host EGL entry points when the active window
+    // implementation uses EGL. This is separate from the guest GL resolver
+    // exposed to Minecraft and may be unavailable for native contexts.
+    virtual ProcAddrFunc getEglProcAddrFunc() { return nullptr; }
+
     virtual std::shared_ptr<GameWindow>
     createWindow(const std::string& title, int width, int height, GraphicsApi api) = 0;
 

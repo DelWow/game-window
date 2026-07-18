@@ -25,6 +25,10 @@ GameWindowManager::ProcAddrFunc EGLUTWindowManager::getProcAddrFunc() {
     return (GameWindowManager::ProcAddrFunc) eglGetProcAddress;
 }
 
+GameWindowManager::ProcAddrFunc EGLUTWindowManager::getEglProcAddrFunc() {
+    return (GameWindowManager::ProcAddrFunc) eglGetProcAddress;
+}
+
 std::shared_ptr<GameWindow> EGLUTWindowManager::createWindow(const std::string& title, int width, int height,
                                                              GraphicsApi api) {
     return std::shared_ptr<GameWindow>(new EGLUTWindow(title, width, height, api));
