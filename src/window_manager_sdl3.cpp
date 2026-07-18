@@ -5,16 +5,26 @@
 
 #include <SDL3/SDL.h>
 
+namespace {
+GameWindowManager::AnyFunc resolveSdlGlProcAddress(const char* name) {
+    return reinterpret_cast<GameWindowManager::AnyFunc>(SDL_GL_GetProcAddress(name));
+}
+
+GameWindowManager::AnyFunc resolveSdlEglProcAddress(const char* name) {
+    return reinterpret_cast<GameWindowManager::AnyFunc>(SDL_EGL_GetProcAddress(name));
+}
+}
+
 SDL3WindowManager::SDL3WindowManager() {
     SDL_Init(SDL_INIT_VIDEO | SDL_INIT_EVENTS | SDL_INIT_GAMEPAD);
 }
 
 GameWindowManager::ProcAddrFunc SDL3WindowManager::getProcAddrFunc() {
-    return (GameWindowManager::ProcAddrFunc) SDL_GL_GetProcAddress;
+    return resolveSdlGlProcAddress;
 }
 
 GameWindowManager::ProcAddrFunc SDL3WindowManager::getEglProcAddrFunc() {
-    return (GameWindowManager::ProcAddrFunc) SDL_EGL_GetProcAddress;
+    return resolveSdlEglProcAddress;
 }
 
 std::shared_ptr<GameWindow> SDL3WindowManager::createWindow(const std::string& title, int width, int height,

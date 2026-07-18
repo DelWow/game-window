@@ -3,6 +3,12 @@
 #include "joystick_manager_glfw.h"
 #include <stdexcept>
 
+namespace {
+GameWindowManager::AnyFunc resolveGlfwProcAddress(const char* name) {
+    return reinterpret_cast<GameWindowManager::AnyFunc>(glfwGetProcAddress(name));
+}
+}
+
 GLFWWindowManager::GLFWWindowManager() {
     // To create a default mapping for not mapped Gamepads
     // to avoid subtracting heads from buttons again
@@ -13,11 +19,11 @@ GLFWWindowManager::GLFWWindowManager() {
 }
 
 GameWindowManager::ProcAddrFunc GLFWWindowManager::getProcAddrFunc() {
-    return (GameWindowManager::ProcAddrFunc) glfwGetProcAddress;
+    return resolveGlfwProcAddress;
 }
 
 GameWindowManager::ProcAddrFunc GLFWWindowManager::getEglProcAddrFunc() {
-    return (GameWindowManager::ProcAddrFunc) glfwGetProcAddress;
+    return resolveGlfwProcAddress;
 }
 
 std::shared_ptr<GameWindow> GLFWWindowManager::createWindow(const std::string& title, int width, int height,

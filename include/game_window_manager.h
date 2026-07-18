@@ -19,7 +19,7 @@ public:
     static std::shared_ptr<GameWindowManager> getManager();
 
 
-    using AnyFunc = void* (*)();
+    using AnyFunc = void (*)();
     using ProcAddrFunc = AnyFunc (*)(const char*);
 
 

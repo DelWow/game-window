@@ -10,8 +10,13 @@
 #endif
 #include <libgen.h>
 #include <cstring>
+#include <EGL/egl.h>
 
-extern "C" void eglGetProcAddress();
+namespace {
+GameWindowManager::AnyFunc resolveEglProcAddress(const char* name) {
+    return reinterpret_cast<GameWindowManager::AnyFunc>(eglGetProcAddress(name));
+}
+}
 
 EGLUTWindowManager::EGLUTWindowManager() {
     char buf[PATH_MAX];
@@ -22,11 +27,11 @@ EGLUTWindowManager::EGLUTWindowManager() {
 }
 
 GameWindowManager::ProcAddrFunc EGLUTWindowManager::getProcAddrFunc() {
-    return (GameWindowManager::ProcAddrFunc) eglGetProcAddress;
+    return resolveEglProcAddress;
 }
 
 GameWindowManager::ProcAddrFunc EGLUTWindowManager::getEglProcAddrFunc() {
-    return (GameWindowManager::ProcAddrFunc) eglGetProcAddress;
+    return resolveEglProcAddress;
 }
 
 std::shared_ptr<GameWindow> EGLUTWindowManager::createWindow(const std::string& title, int width, int height,
