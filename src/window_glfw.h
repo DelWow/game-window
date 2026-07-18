@@ -59,6 +59,8 @@ public:
 
     void makeCurrent(bool active) override;
 
+    GraphicsContextInfo getGraphicsContextInfo() const override;
+
     double getRelativeScale() const;
 
     void setRelativeScale();

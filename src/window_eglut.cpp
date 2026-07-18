@@ -76,6 +76,13 @@ void EGLUTWindow::makeCurrent(bool active) {
     eglutMakeCurrent(active ? winId : -1);
 }
 
+GraphicsContextInfo EGLUTWindow::getGraphicsContextInfo() const {
+    GraphicsContextInfo info;
+    info.windowSystem = GraphicsWindowSystem::EGLUT;
+    info.creationApi = GraphicsContextCreationApi::EGL;
+    return info;
+}
+
 void EGLUTWindow::show() {
 #ifdef GAMEWINDOW_X11_LOCK
     std::lock_guard<std::recursive_mutex> lock(x11_sync);

@@ -55,6 +55,8 @@ public:
 
     void makeCurrent(bool active) override;
 
+    GraphicsContextInfo getGraphicsContextInfo() const override;
+
     void show() override;
 
     void close() override;

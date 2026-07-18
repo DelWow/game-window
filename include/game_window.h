@@ -9,6 +9,43 @@ enum class GraphicsApi {
     OPENGL,
     OPENGL_ES2
 };
+
+enum class GraphicsClientApi {
+    UNKNOWN,
+    OPENGL,
+    OPENGL_ES
+};
+
+enum class GraphicsWindowSystem {
+    UNKNOWN,
+    GLFW,
+    SDL3,
+    EGLUT
+};
+
+enum class GraphicsContextProfile {
+    UNKNOWN,
+    CORE,
+    COMPATIBILITY,
+    ES
+};
+
+enum class GraphicsContextCreationApi {
+    UNKNOWN,
+    NATIVE,
+    EGL,
+    OSMESA
+};
+
+struct GraphicsContextInfo {
+    GraphicsWindowSystem windowSystem = GraphicsWindowSystem::UNKNOWN;
+    GraphicsClientApi clientApi = GraphicsClientApi::UNKNOWN;
+    int versionMajor = -1;
+    int versionMinor = -1;
+    int versionRevision = -1;
+    GraphicsContextProfile profile = GraphicsContextProfile::UNKNOWN;
+    GraphicsContextCreationApi creationApi = GraphicsContextCreationApi::UNKNOWN;
+};
 enum class KeyAction {
     PRESS,
     REPEAT,
@@ -93,6 +130,12 @@ public:
     virtual ~GameWindow() {}
 
     virtual void makeCurrent(bool) = 0;
+
+    // Returns properties of the successfully created context. Call this while
+    // the context is current; implementations must not return request hints.
+    virtual GraphicsContextInfo getGraphicsContextInfo() const {
+        return {};
+    }
 
     virtual void setIcon(std::string const& iconPath) = 0;
 

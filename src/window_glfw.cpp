@@ -66,6 +66,57 @@ void GLFWGameWindow::makeCurrent(bool c) {
     glfwMakeContextCurrent(c ? window : nullptr);
 }
 
+GraphicsContextInfo GLFWGameWindow::getGraphicsContextInfo() const {
+    GraphicsContextInfo info;
+    info.windowSystem = GraphicsWindowSystem::GLFW;
+
+    switch(glfwGetWindowAttrib(window, GLFW_CLIENT_API)) {
+    case GLFW_OPENGL_API:
+        info.clientApi = GraphicsClientApi::OPENGL;
+        break;
+    case GLFW_OPENGL_ES_API:
+        info.clientApi = GraphicsClientApi::OPENGL_ES;
+        break;
+    default:
+        break;
+    }
+
+    info.versionMajor = glfwGetWindowAttrib(window, GLFW_CONTEXT_VERSION_MAJOR);
+    info.versionMinor = glfwGetWindowAttrib(window, GLFW_CONTEXT_VERSION_MINOR);
+    info.versionRevision = glfwGetWindowAttrib(window, GLFW_CONTEXT_REVISION);
+
+    if(info.clientApi == GraphicsClientApi::OPENGL_ES) {
+        info.profile = GraphicsContextProfile::ES;
+    } else {
+        switch(glfwGetWindowAttrib(window, GLFW_OPENGL_PROFILE)) {
+        case GLFW_OPENGL_CORE_PROFILE:
+            info.profile = GraphicsContextProfile::CORE;
+            break;
+        case GLFW_OPENGL_COMPAT_PROFILE:
+            info.profile = GraphicsContextProfile::COMPATIBILITY;
+            break;
+        default:
+            break;
+        }
+    }
+
+    switch(glfwGetWindowAttrib(window, GLFW_CONTEXT_CREATION_API)) {
+    case GLFW_NATIVE_CONTEXT_API:
+        info.creationApi = GraphicsContextCreationApi::NATIVE;
+        break;
+    case GLFW_EGL_CONTEXT_API:
+        info.creationApi = GraphicsContextCreationApi::EGL;
+        break;
+    case GLFW_OSMESA_CONTEXT_API:
+        info.creationApi = GraphicsContextCreationApi::OSMESA;
+        break;
+    default:
+        break;
+    }
+
+    return info;
+}
+
 GLFWGameWindow::~GLFWGameWindow() {
 #ifdef GAMEWINDOW_X11_LOCK
     std::lock_guard<std::recursive_mutex> lock(x11_sync);

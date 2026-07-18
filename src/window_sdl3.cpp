@@ -63,6 +63,39 @@ void SDL3GameWindow::makeCurrent(bool c) {
     SDL_GL_MakeCurrent(window, c ? context : nullptr);
 }
 
+GraphicsContextInfo SDL3GameWindow::getGraphicsContextInfo() const {
+    GraphicsContextInfo info;
+    info.windowSystem = GraphicsWindowSystem::SDL3;
+    int value = 0;
+
+    if(SDL_GL_GetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, &value)) {
+        info.versionMajor = value;
+    }
+    if(SDL_GL_GetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, &value)) {
+        info.versionMinor = value;
+    }
+    if(SDL_GL_GetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, &value)) {
+        switch(value) {
+        case SDL_GL_CONTEXT_PROFILE_ES:
+            info.clientApi = GraphicsClientApi::OPENGL_ES;
+            info.profile = GraphicsContextProfile::ES;
+            break;
+        case SDL_GL_CONTEXT_PROFILE_CORE:
+            info.clientApi = GraphicsClientApi::OPENGL;
+            info.profile = GraphicsContextProfile::CORE;
+            break;
+        case SDL_GL_CONTEXT_PROFILE_COMPATIBILITY:
+            info.clientApi = GraphicsClientApi::OPENGL;
+            info.profile = GraphicsContextProfile::COMPATIBILITY;
+            break;
+        default:
+            break;
+        }
+    }
+
+    return info;
+}
+
 SDL3GameWindow::~SDL3GameWindow() {
     if(window) {
         SDL_DestroyWindow(window);

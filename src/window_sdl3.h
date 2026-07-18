@@ -44,6 +44,8 @@ public:
 
     void makeCurrent(bool active) override;
 
+    GraphicsContextInfo getGraphicsContextInfo() const override;
+
     int getRelativeScale() const;
 
     void setRelativeScale();
